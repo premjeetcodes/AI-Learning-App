@@ -11,21 +11,21 @@ function authHeader(token) {
 }
 
 export function signup(data) {
-  return axios.post(`${BASE}/api/signup`, data);
+  return axios.post(`${BASE}/api/auth/signup`, data);
 }
 
 export function login(data) {
-  return axios.post(`${BASE}/api/login`, data);
+  return axios.post(`${BASE}/api/auth/login`, data);
 }
 
 export function loadCloud(token) {
-  return axios.get(`${BASE}/api/load`, {
+  return axios.get(`${BASE}/api/progress/load`, {
     headers: authHeader(token)
   });
 }
 
 export function saveCloud(token, days) {
-  return axios.post(`${BASE}/api/save`, { days }, {
+  return axios.post(`${BASE}/api/progress/save`, { days }, {
     headers: authHeader(token)
   });
 }
