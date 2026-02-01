@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Auth.css";
+import { login as apiLogin, signup as apiSignup } from "./api";
 
 export default function Auth({ onAuth }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -34,25 +35,25 @@ export default function Auth({ onAuth }) {
     }
 
     try {
-      const endpoint = isLogin ? "login" : "signup";
-      const res = await fetch(`http://localhost:3000/${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), password })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || `${endpoint} failed`);
-        setLoading(false);
-        return;
-      }
-
       if (isLogin) {
+        const res = await apiLogin({ email: email.trim(), password });
+        // axios returns data in res.data
+        const data = res.data || {};
+        if (!res || res.status >= 400) {
+          setError((data && data.message) || "Login failed");
+          setLoading(false);
+          return;
+        }
         localStorage.setItem("token", data.token);
         onAuth();
       } else {
+        const res = await apiSignup({ email: email.trim(), password });
+        const data = res.data || {};
+        if (!res || res.status >= 400) {
+          setError((data && data.message) || "Signup failed");
+          setLoading(false);
+          return;
+        }
         setError("");
         setIsLogin(true);
         setEmail("");
@@ -61,7 +62,7 @@ export default function Auth({ onAuth }) {
         alert("Signup successful! Please login.");
       }
     } catch (err) {
-      setError("Network error. Please try again.");
+      setError(err.response?.data?.message || err.message || "Network error. Please try again.");
     }
     setLoading(false);
   }
