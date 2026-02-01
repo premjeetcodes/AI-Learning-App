@@ -1,0 +1,42 @@
+# Node
+node_modules/
+npm-debug.log
+package-lock.json
+.yarn/
+.yarnrc
+.pnp.*
+coverage/
+logs/
+*.log
+*.tgz
+
+# dotenv
+.env
+.env.local
+.env.*.local
+
+# Vite / build
+dist/
+build/
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# OS
+Thumbs.db
+
+# local sqlite / db
+*.sqlite
+*.db
+
+# frontend local
+frontend/node_modules/
+frontend/dist/
+
+# backend local
+backend/node_modules/
+
+# misc
+*.local
